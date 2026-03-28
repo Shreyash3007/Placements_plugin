@@ -1,0 +1,313 @@
+<div class="fp-profile-page">
+
+  {{#saved}}
+  <div class="fp-success-notification">
+    ✓ Profile saved successfully!
+  </div>
+  {{/saved}}
+
+  {{#errors}}
+    {{#errors}}
+    <div class="fp-error-notification">⚠ {{.}}</div>
+    {{/errors}}
+  {{/errors}}
+
+  <!-- Overall Completion Bar -->
+  <div class="fp-completion-bar-wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <h3 style="margin:0;">{{#str}} profile_completion, local_finplacements {{/str}}</h3>
+      <div>
+        <button type="button" id="fp-expand-all" class="fp-btn fp-btn-secondary fp-btn-sm">Expand All</button>
+        <button type="button" id="fp-collapse-all" class="fp-btn fp-btn-secondary fp-btn-sm">Collapse All</button>
+      </div>
+    </div>
+    
+    <div class="fp-progress-bar-outer">
+      <div class="fp-progress-bar-inner" style="width: {{score}}%;"></div>
+    </div>
+    
+    <div style="margin-top:8px;font-size:0.9rem;">
+      {{#is_complete}}
+        <span style="color:var(--fp-success);font-weight:600;">✓ {{#str}} profile_complete, local_finplacements {{/str}}</span>
+        ({{score}}% complete)
+      {{/is_complete}}
+      {{^is_complete}}
+        <span style="color:var(--fp-warning);font-weight:600;">⚠ {{#str}} profile_incomplete, local_finplacements {{/str}}</span>
+        ({{score}}% complete — aim for 80%+)
+      {{/is_complete}}
+    </div>
+  </div>
+
+  <form method="post" action="{{form_action}}" class="fp-form" id="fp-profile-form">
+    <input type="hidden" name="sesskey" value="{{sesskey}}">
+
+    <!-- Section 1: Personal Information -->
+    <div class="fp-section fp-section-expanded" data-section="personal" data-score="{{#section_scores.personal.score}}{{.}}{{/section_scores.personal.score}}{{^section_scores.personal.score}}0{{/section_scores.personal.score}}" data-total="{{#section_scores.personal.total}}{{.}}{{/section_scores.personal.total}}{{^section_scores.personal.total}}4{{/section_scores.personal.total}}" data-filled="{{#section_scores.personal.filled}}{{.}}{{/section_scores.personal.filled}}{{^section_scores.personal.filled}}0{{/section_scores.personal.filled}}">
+      <div class="fp-section-header" data-section="personal">
+        <span class="fp-section-icon">−</span>
+        <span class="fp-section-title">{{#str}} section_personal, local_finplacements {{/str}}</span>
+        <span class="fp-section-status {{#section_scores.personal.score}}{{#section_scores.personal.score}}{{.}}{{/section_scores.personal.score}}{{/section_scores.personal.score}}{{^section_scores.personal.score}}0{{/section_scores.personal.score}}{{^section_scores.personal.score}}fp-status-incomplete{{/section_scores.personal.score}}{{#section_scores.personal.score}}{{#section_scores.personal.score}}{{.}}{{/section_scores.personal.score}}{{/section_scores.personal.score}}{{^section_scores.personal.score}}0{{/section_scores.personal.score}}{{#section_scores.personal.score}}{{#section_scores.personal.score}}{{.}}{{/section_scores.personal.score}}{{/section_scores.personal.score}}{{^section_scores.personal.score}}0{{/section_scores.personal.score}}">⚠</span>
+        <div class="fp-section-progress">
+          <div class="fp-section-progress-bar-wrap">
+            <div class="fp-section-progress-bar" style="width: {{#section_scores.personal.score}}{{.}}{{/section_scores.personal.score}}{{^section_scores.personal.score}}0{{/section_scores.personal.score}}%;"></div>
+          </div>
+          <span class="fp-section-progress-text">{{#section_scores.personal.filled}}{{.}}{{/section_scores.personal.filled}}{{^section_scores.personal.filled}}0{{/section_scores.personal.filled}} / {{#section_scores.personal.total}}{{.}}{{/section_scores.personal.total}}{{^section_scores.personal.total}}4{{/section_scores.personal.total}} fields</span>
+        </div>
+      </div>
+      
+      <div class="fp-section-content">
+        <div class="fp-form-grid">
+          <!-- Phone -->
+          <div class="fp-field fp-field-required">
+            <label for="id_phone">Phone Number <span class="fp-required">*</span></label>
+            <input type="text" id="id_phone" name="phone" value="{{candidate.phone}}" 
+                   placeholder="+91 98765 43210" class="fp-input" required>
+          </div>
+
+          <!-- City -->
+          <div class="fp-field fp-field-required">
+            <label for="id_city">City <span class="fp-required">*</span></label>
+            <input type="text" id="id_city" name="city" value="{{candidate.city}}" 
+                   placeholder="e.g. Mumbai" class="fp-input" required>
+          </div>
+
+          <!-- State -->
+          <div class="fp-field fp-field-required">
+            <label for="id_state">State <span class="fp-required">*</span></label>
+            <input type="text" id="id_state" name="state" value="{{candidate.state}}" 
+                   placeholder="e.g. Maharashtra" class="fp-input" required>
+          </div>
+
+          <!-- Experience Band -->
+          <div class="fp-field fp-field-required">
+            <label for="id_experience_band">Years of Experience <span class="fp-required">*</span></label>
+            <select id="id_experience_band" name="experience_band" class="fp-select" required>
+              <option value="">Select...</option>
+              {{#exp_bands}}
+              <option value="{{val}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+              {{/exp_bands}}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Academic Background -->
+    <div class="fp-section fp-section-expanded" data-section="academic" data-score="{{#section_scores.academic.score}}{{.}}{{/section_scores.academic.score}}{{^section_scores.academic.score}}0{{/section_scores.academic.score}}" data-total="{{#section_scores.academic.total}}{{.}}{{/section_scores.academic.total}}{{^section_scores.academic.total}}8{{/section_scores.academic.total}}" data-filled="{{#section_scores.academic.filled}}{{.}}{{/section_scores.academic.filled}}{{^section_scores.academic.filled}}0{{/section_scores.academic.filled}}">
+      <div class="fp-section-header" data-section="academic">
+        <span class="fp-section-icon">−</span>
+        <span class="fp-section-title">{{#str}} section_academic, local_finplacements {{/str}}</span>
+        <span class="fp-section-status">⚠</span>
+        <div class="fp-section-progress">
+          <div class="fp-section-progress-bar-wrap">
+            <div class="fp-section-progress-bar" style="width: {{#section_scores.academic.score}}{{.}}{{/section_scores.academic.score}}{{^section_scores.academic.score}}0{{/section_scores.academic.score}}%;"></div>
+          </div>
+          <span class="fp-section-progress-text">{{#section_scores.academic.filled}}{{.}}{{/section_scores.academic.filled}}{{^section_scores.academic.filled}}0{{/section_scores.academic.filled}} / {{#section_scores.academic.total}}{{.}}{{/section_scores.academic.total}}{{^section_scores.academic.total}}8{{/section_scores.academic.total}} fields</span>
+        </div>
+      </div>
+      
+      <div class="fp-section-content">
+        <div class="fp-form-grid">
+          <!-- 10th Percentage -->
+          <div class="fp-field">
+            <label for="id_tenth_pct">10th Percentage</label>
+            <input type="text" id="id_tenth_pct" name="tenth_pct" value="{{candidate.tenth_pct}}" 
+                   placeholder="e.g. 85%" class="fp-input">
+          </div>
+
+          <!-- 12th Percentage -->
+          <div class="fp-field">
+            <label for="id_twelfth_pct">12th Percentage</label>
+            <input type="text" id="id_twelfth_pct" name="twelfth_pct" value="{{candidate.twelfth_pct}}" 
+                   placeholder="e.g. 88%" class="fp-input">
+          </div>
+
+          <!-- UG Status -->
+          <div class="fp-field">
+            <label for="id_ug_status">Undergraduate Status</label>
+            <select id="id_ug_status" name="ug_status" class="fp-select">
+              <option value="">Select...</option>
+              <option value="completed" {{#candidate.ug_status_completed}}selected{{/candidate.ug_status_completed}}>Completed</option>
+              <option value="pursuing" {{#candidate.ug_status_pursuing}}selected{{/candidate.ug_status_pursuing}}>Pursuing</option>
+            </select>
+          </div>
+
+          <!-- UG Field -->
+          <div class="fp-field">
+            <label for="id_ug_field">UG Field / Specialisation</label>
+            <input type="text" id="id_ug_field" name="ug_field" value="{{candidate.ug_field}}" 
+                   placeholder="e.g. Commerce" class="fp-input">
+          </div>
+
+          <!-- UG GPA -->
+          <div class="fp-field">
+            <label for="id_ug_gpa">UG GPA / Percentage</label>
+            <input type="text" id="id_ug_gpa" name="ug_gpa" value="{{candidate.ug_gpa}}" 
+                   placeholder="e.g. 8.5 or 85%" class="fp-input">
+          </div>
+
+          <!-- PG Status -->
+          <div class="fp-field">
+            <label for="id_pg_status">Postgraduate Status</label>
+            <select id="id_pg_status" name="pg_status" class="fp-select">
+              <option value="">Select...</option>
+              <option value="completed" {{#candidate.pg_status_completed}}selected{{/candidate.pg_status_completed}}>Completed</option>
+              <option value="pursuing" {{#candidate.pg_status_pursuing}}selected{{/candidate.pg_status_pursuing}}>Pursuing</option>
+            </select>
+          </div>
+
+          <!-- PG Field -->
+          <div class="fp-field">
+            <label for="id_pg_field">PG Field / Specialisation</label>
+            <input type="text" id="id_pg_field" name="pg_field" value="{{candidate.pg_field}}" 
+                   placeholder="e.g. Finance" class="fp-input">
+          </div>
+
+          <!-- PG GPA -->
+          <div class="fp-field">
+            <label for="id_pg_gpa">PG GPA / Percentage</label>
+            <input type="text" id="id_pg_gpa" name="pg_gpa" value="{{candidate.pg_gpa}}" 
+                   placeholder="e.g. 9.0 or 90%" class="fp-input">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Professional Certifications -->
+    <div class="fp-section fp-section-expanded" data-section="certifications" data-score="{{#section_scores.certifications.score}}{{.}}{{/section_scores.certifications.score}}{{^section_scores.certifications.score}}0{{/section_scores.certifications.score}}" data-total="{{#section_scores.certifications.total}}{{.}}{{/section_scores.certifications.total}}{{^section_scores.certifications.total}}5{{/section_scores.certifications.total}}" data-filled="{{#section_scores.certifications.filled}}{{.}}{{/section_scores.certifications.filled}}{{^section_scores.certifications.filled}}0{{/section_scores.certifications.filled}}">
+      <div class="fp-section-header" data-section="certifications">
+        <span class="fp-section-icon">−</span>
+        <span class="fp-section-title">{{#str}} section_certifications, local_finplacements {{/str}}</span>
+        <span class="fp-section-status">⚠</span>
+        <div class="fp-section-progress">
+          <div class="fp-section-progress-bar-wrap">
+            <div class="fp-section-progress-bar" style="width: {{#section_scores.certifications.score}}{{.}}{{/section_scores.certifications.score}}{{^section_scores.certifications.score}}0{{/section_scores.certifications.score}}%;"></div>
+          </div>
+          <span class="fp-section-progress-text">{{#section_scores.certifications.filled}}{{.}}{{/section_scores.certifications.filled}}{{^section_scores.certifications.filled}}0{{/section_scores.certifications.filled}} / {{#section_scores.certifications.total}}{{.}}{{/section_scores.certifications.total}}{{^section_scores.certifications.total}}5{{/section_scores.certifications.total}} fields</span>
+        </div>
+      </div>
+      
+      <div class="fp-section-content">
+        <div class="fp-form-grid">
+          <!-- CFA Level -->
+          <div class="fp-field">
+            <label for="id_cfa_level">CFA Level Cleared</label>
+            <select id="id_cfa_level" name="cfa_level" class="fp-select">
+              {{#cfa_opts}}
+              <option value="{{val}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+              {{/cfa_opts}}
+            </select>
+          </div>
+
+          <!-- FRM Level -->
+          <div class="fp-field">
+            <label for="id_frm_level">FRM Level Cleared</label>
+            <select id="id_frm_level" name="frm_level" class="fp-select">
+              {{#frm_opts}}
+              <option value="{{val}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+              {{/frm_opts}}
+            </select>
+          </div>
+
+          <!-- Other Certs -->
+          <div class="fp-field">
+            <label for="id_other_certs">Other Certifications</label>
+            <input type="text" id="id_other_certs" name="other_certs" value="{{candidate.other_certs}}" 
+                   placeholder="e.g. NISM, Financial Modeling" class="fp-input">
+          </div>
+
+          <!-- FM Cert -->
+          <div class="fp-field fp-field-checkbox">
+            <label class="fp-checkbox-label">
+              <input type="checkbox" name="fm_cert" value="1" {{#candidate.fm_cert}}checked{{/candidate.fm_cert}} class="fp-checkbox">
+              <span>FinTree FM Certification</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: Work Experience -->
+    <div class="fp-section fp-section-expanded" data-section="work" data-score="{{#section_scores.work.score}}{{.}}{{/section_scores.work.score}}{{^section_scores.work.score}}0{{/section_scores.work.score}}" data-total="{{#section_scores.work.total}}{{.}}{{/section_scores.work.total}}{{^section_scores.work.total}}3{{/section_scores.work.total}}" data-filled="{{#section_scores.work.filled}}{{.}}{{/section_scores.work.filled}}{{^section_scores.work.filled}}0{{/section_scores.work.filled}}">
+      <div class="fp-section-header" data-section="work">
+        <span class="fp-section-icon">−</span>
+        <span class="fp-section-title">{{#str}} section_work, local_finplacements {{/str}}</span>
+        <span class="fp-section-status">⚠</span>
+        <div class="fp-section-progress">
+          <div class="fp-section-progress-bar-wrap">
+            <div class="fp-section-progress-bar" style="width: {{#section_scores.work.score}}{{.}}{{/section_scores.work.score}}{{^section_scores.work.score}}0{{/section_scores.work.score}}%;"></div>
+          </div>
+          <span class="fp-section-progress-text">{{#section_scores.work.filled}}{{.}}{{/section_scores.work.filled}}{{^section_scores.work.filled}}0{{/section_scores.work.filled}} / {{#section_scores.work.total}}{{.}}{{/section_scores.work.total}}{{^section_scores.work.total}}3{{/section_scores.work.total}} fields</span>
+        </div>
+      </div>
+      
+      <div class="fp-section-content">
+        <div class="fp-form-grid">
+          <!-- Current Employer -->
+          <div class="fp-field">
+            <label for="id_current_employer">Current Employer</label>
+            <input type="text" id="id_current_employer" name="current_employer" value="{{candidate.current_employer}}" 
+                   placeholder="e.g. HDFC Bank" class="fp-input">
+          </div>
+
+          <!-- Designation -->
+          <div class="fp-field">
+            <label for="id_designation">Designation / Job Title</label>
+            <input type="text" id="id_designation" name="designation" value="{{candidate.designation}}" 
+                   placeholder="e.g. Analyst" class="fp-input">
+          </div>
+
+          <!-- Current CTC -->
+          <div class="fp-field">
+            <label for="id_current_ctc">Current CTC (per annum)</label>
+            <input type="text" id="id_current_ctc" name="current_ctc" value="{{candidate.current_ctc}}" 
+                   placeholder="e.g. ₹8.5 LPA" class="fp-input">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5: Documents -->
+    <div class="fp-section fp-section-expanded" data-section="documents" data-score="{{#section_scores.documents.score}}{{.}}{{/section_scores.documents.score}}{{^section_scores.documents.score}}0{{/section_scores.documents.score}}" data-total="{{#section_scores.documents.total}}{{.}}{{/section_scores.documents.total}}{{^section_scores.documents.total}}2{{/section_scores.documents.total}}" data-filled="{{#section_scores.documents.filled}}{{.}}{{/section_scores.documents.filled}}{{^section_scores.documents.filled}}0{{/section_scores.documents.filled}}">
+      <div class="fp-section-header" data-section="documents">
+        <span class="fp-section-icon">−</span>
+        <span class="fp-section-title">{{#str}} section_documents, local_finplacements {{/str}}</span>
+        <span class="fp-section-status">⚠</span>
+        <div class="fp-section-progress">
+          <div class="fp-section-progress-bar-wrap">
+            <div class="fp-section-progress-bar" style="width: {{#section_scores.documents.score}}{{.}}{{/section_scores.documents.score}}{{^section_scores.documents.score}}0{{/section_scores.documents.score}}%;"></div>
+          </div>
+          <span class="fp-section-progress-text">{{#section_scores.documents.filled}}{{.}}{{/section_scores.documents.filled}}{{^section_scores.documents.filled}}0{{/section_scores.documents.filled}} / {{#section_scores.documents.total}}{{.}}{{/section_scores.documents.total}}{{^section_scores.documents.total}}2{{/section_scores.documents.total}} fields</span>
+        </div>
+      </div>
+      
+      <div class="fp-section-content">
+        <div class="fp-form-grid">
+          <!-- Resume URL -->
+          <div class="fp-field fp-field-wide">
+            <label for="id_resume_url">Resume URL (Google Drive Link)</label>
+            <input type="text" id="id_resume_url" name="resume_url" value="{{candidate.resume_url}}" 
+                   placeholder="https://drive.google.com/file/d/..." class="fp-input">
+            <small class="fp-hint">Upload your resume to Google Drive and paste the sharing link (make sure it's publicly viewable)</small>
+          </div>
+
+          <!-- Photo URL -->
+          <div class="fp-field fp-field-wide">
+            <label for="id_photo_url">Passport Photo URL</label>
+            <input type="text" id="id_photo_url" name="photo_url" value="{{candidate.photo_url}}" 
+                   placeholder="https://..." class="fp-input">
+            <small class="fp-hint">Upload a passport-sized photo to Google Drive or Imgur and paste the link</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="fp-form-actions">
+      <button type="submit" class="fp-btn fp-btn-primary fp-btn-lg" id="fp-profile-save">
+        💾 {{#str}} profile_save, local_finplacements {{/str}}
+      </button>
+    </div>
+
+  </form>
+</div>

@@ -1,0 +1,10 @@
+<nav class="fp-plugin-nav" aria-label="FinTree Placements">
+  <div class="fp-plugin-nav-brand">🌳 FinTree Placements</div>
+  <ul class="fp-plugin-nav-links">
+    {{#links}}
+      <li>
+        <a href="{{href}}" {{#is_active}}class="fp-nav-active"{{/is_active}}>{{{label}}}</a>
+      </li>
+    {{/links}}
+  </ul>
+</nav>

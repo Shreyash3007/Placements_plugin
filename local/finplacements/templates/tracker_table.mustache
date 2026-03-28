@@ -1,0 +1,85 @@
+{{!
+    Tracker Table Partial - Used for AJAX loading
+    
+    Renders the applications table with enhanced pipeline view.
+}}
+
+{{#has_applications}}
+<div class="fp-table-wrap">
+  <table class="fp-table" id="fp-tracker-table">
+    <thead>
+      <tr>
+        <th>Job ID</th>
+        <th>Opening</th>
+        <th>Company</th>
+        <th>Location</th>
+        <th>Applied On</th>
+        <th>Deadline</th>
+        <th>Status</th>
+        <th>Last Updated</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#applications}}
+      <tr id="fp-tracker-row-{{id}}">
+        <td><code style="font-size:0.8rem;">{{jobid}}</code></td>
+        <td><strong>{{title}}</strong></td>
+        <td>{{company}}</td>
+        <td>{{location}}</td>
+        <td>
+          <div>{{applied_formatted}}</div>
+        </td>
+        <td style="{{#deadline_passed}}color:#c62828;font-weight:600;{{/deadline_passed}}">
+          <div>{{deadline_formatted}}</div>
+        </td>
+        <td>{{{status_badge}}}</td>
+        <td>
+          <small style="color:#78909c;">{{updated_formatted}}</small>
+        </td>
+      </tr>
+      <!-- Visual pipeline row -->
+      <tr class="fp-pipeline-row">
+        <td colspan="8" style="padding:4px 16px 12px;background:#fafafa;border-bottom:1px solid #eceff1;">
+
+          {{#is_rejected}}
+            <div class="fp-pipeline">
+              <span class="fp-pipeline-step fp-step-rejected">&#x2717; Application Rejected</span>
+            </div>
+          {{/is_rejected}}
+
+          {{^is_rejected}}
+            <div class="fp-pipeline">
+              {{#pipeline_steps}}
+                <span class="{{cls}}">{{label}}</span>
+                {{#show_arrow}}
+                  <span class="fp-pipeline-arrow {{#arrow_done}}fp-arrow-done{{/arrow_done}}">&#x203A;</span>
+                {{/show_arrow}}
+              {{/pipeline_steps}}
+            </div>
+            
+            {{#pipeline_steps}}
+              {{#timestamp}}
+                <div class="fp-pipeline-timestamp">{{label}}: {{timestamp}}</div>
+              {{/timestamp}}
+            {{/pipeline_steps}}
+          {{/is_rejected}}
+
+        </td>
+      </tr>
+      {{/applications}}
+    </tbody>
+  </table>
+</div>
+
+<div style="margin-top:16px;font-size:0.85rem;color:#546e7a;">
+  Showing {{app_count}} application(s). Status updates are made by the FinTree placements team.
+</div>
+{{/has_applications}}
+
+{{^has_applications}}
+<div class="fp-empty-state">
+  <div class="fp-empty-icon">📄</div>
+  <h3>No applications found.</h3>
+  <p>Try adjusting your filters or search criteria.</p>
+</div>
+{{/has_applications}}

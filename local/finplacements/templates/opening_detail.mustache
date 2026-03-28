@@ -1,0 +1,99 @@
+<div class="fp-jobboard-page">
+  <div class="fp-page-header">
+    <a href="{{board_url}}" class="fp-btn fp-btn-secondary fp-btn-sm" style="margin-bottom: 20px;">
+      ← Back to Job Board
+    </a>
+  </div>
+
+  <div class="fp-opening-detail-card">
+    <div class="fp-od-header">
+      <div class="fp-od-title-row">
+        <h2>{{opening.title}}</h2>
+        <span class="fp-job-id">{{opening.jobid}}</span>
+      </div>
+      <h3 class="fp-od-company">{{opening.company}}</h3>
+
+      <div class="fp-job-meta" style="margin-top: 16px;">
+        <span class="fp-pill">📍 {{opening.location}}</span>
+        <span class="fp-pill">💼 {{opening.employment_type}}</span>
+        <span class="fp-pill">📈 Exp: {{opening.experience_required}}</span>
+
+        {{#opening.cfa_required}}
+          <span class="fp-pill">CFA: {{opening.cfa_required}}</span>
+        {{/opening.cfa_required}}
+
+        {{#opening.frm_required}}
+          <span class="fp-pill">FRM: {{opening.frm_required}}</span>
+        {{/opening.frm_required}}
+
+        {{#opening.show_ctc}}
+          <span class="fp-pill">💰 CTC: {{opening.min_ctc}}
+            {{#opening.max_ctc}} – {{opening.max_ctc}}{{/opening.max_ctc}}
+          </span>
+        {{/opening.show_ctc}}
+        
+        {{#opening.show_stipend}}
+          <span class="fp-pill">💰 Stipend: {{opening.stipend}}</span>
+        {{/opening.show_stipend}}
+      </div>
+      
+      <div class="fp-deadline" style="margin-top: 12px; font-size: 0.9rem;">
+        📅 <strong>Deadline:</strong> {{deadline_formatted}}
+        {{#deadline_passed}}
+          <span style="color:var(--fp-danger); font-weight:700;"> (Closed)</span>
+        {{/deadline_passed}}
+      </div>
+    </div>
+
+    <div class="fp-od-body">
+      {{#has_overview}}
+        <div class="fp-od-section">
+          <h4>Role Overview</h4>
+          <div class="fp-od-text">{{{overview_html}}}</div>
+        </div>
+      {{/has_overview}}
+
+      {{#has_jd}}
+        <div class="fp-od-section">
+          <h4>Job Description</h4>
+          <div class="fp-od-text">{{{jd_html}}}</div>
+        </div>
+      {{/has_jd}}
+
+      {{#has_qualifications}}
+        <div class="fp-od-section">
+          <h4>Requirements & Qualifications</h4>
+          <div class="fp-od-text">{{{qualifications_html}}}</div>
+        </div>
+      {{/has_qualifications}}
+    </div>
+
+    <div class="fp-od-footer">
+      {{#is_applied}}
+        <div class="fp-notice-info" style="margin-bottom:0; flex-grow: 1;">
+          <strong>✓ You have already applied for this role.</strong> You can track your application status in the Tracker.
+        </div>
+        <a href="{{tracker_url}}" class="fp-btn fp-btn-secondary">
+          View in Tracker
+        </a>
+      {{/is_applied}}
+      
+      {{^is_applied}}
+        {{#deadline_passed}}
+          <button class="fp-btn" style="background:#eceff1;color:#546e7a;width:100%;justify-content:center;" disabled>
+            Application Deadline Passed
+          </button>
+        {{/deadline_passed}}
+        
+        {{^deadline_passed}}
+          <div style="flex-grow:1; color:var(--fp-text-muted); font-size: 0.9rem;">
+            Ready to apply? You will be able to review and update your profile specifically for this role on the next screen.
+          </div>
+          <a href="{{apply_url}}" class="fp-btn fp-btn-primary" style="font-size: 1.05rem; padding: 14px 32px;">
+            Review Profile & Apply →
+          </a>
+        {{/deadline_passed}}
+      {{/is_applied}}
+    </div>
+  </div>
+</div>

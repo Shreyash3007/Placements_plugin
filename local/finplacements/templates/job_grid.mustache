@@ -1,0 +1,21 @@
+{{!
+    Job Grid Partial - Used for AJAX loading
+    
+    This partial renders the grid of job cards.
+}}
+
+{{#has_openings}}
+<div class="fp-jobs-grid">
+    {{#openings}}
+        {{> local_finplacements/job_card }}
+    {{/openings}}
+</div>
+{{/has_openings}}
+
+{{^has_openings}}
+<div class="fp-empty-state">
+    <div class="fp-empty-icon">📋</div>
+    <h3>No openings available right now.</h3>
+    <p>Check back soon — new opportunities are posted regularly.</p>
+</div>
+{{/has_openings}}

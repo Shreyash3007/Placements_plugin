@@ -1,0 +1,76 @@
+<div class="fp-job-card" id="fp-job-card-{{id}}">
+
+  {{#company_logo_url}}
+  <div class="fp-company-logo">
+    <img src="{{company_logo_url}}" alt="{{company}}" onerror="this.style.display='none'" loading="lazy">
+  </div>
+  {{/company_logo_url}}
+
+  <div class="fp-job-content">
+    <div class="fp-job-header">
+      <span class="fp-job-id">{{jobid}}</span>
+      <span class="fp-type-badge {{#is_internship}}type-internship{{/is_internship}}{{^is_internship}}type-fulltime{{/is_internship}}">
+        {{type_label}}
+      </span>
+    </div>
+
+    <div class="fp-job-title">{{title}}</div>
+    <div class="fp-job-company">{{company}}</div>
+
+    <div class="fp-job-meta">
+      <span class="fp-pill">📍 {{location}}</span>
+      <span class="fp-pill">💼 {{experience_label}}</span>
+
+      {{#has_cfa}}
+        <span class="fp-pill">CFA: {{cfa_label}}</span>
+      {{/has_cfa}}
+
+      {{#has_frm}}
+        <span class="fp-pill">FRM: {{frm_label}}</span>
+      {{/has_frm}}
+
+      {{#is_fulltime_with_ctc}}
+        <span class="fp-pill">💰 {{min_ctc}}
+          {{#has_max_ctc}} – {{max_ctc}}{{/has_max_ctc}}
+        </span>
+      {{/is_fulltime_with_ctc}}
+
+      {{#is_internship_with_stipend}}
+        <span class="fp-pill">💰 Stipend: {{stipend}}</span>
+      {{/is_internship_with_stipend}}
+    </div>
+
+    <div class="fp-job-info-row">
+      <span class="fp-posted-date">📅 Posted {{formatted_posted_date}}</span>
+      {{#applicant_count}}
+        <span class="fp-applicant-count">👤 {{applicant_count}} applied</span>
+      {{/applicant_count}}
+    </div>
+
+    <div class="fp-deadline {{#deadline_soon}}deadline-urgent{{/deadline_soon}}">
+      📅 Deadline: {{deadline_formatted}}
+      {{#deadline_soon_warning}}
+        <strong> — Closing soon!</strong>
+      {{/deadline_soon_warning}}
+    </div>
+
+    <div class="fp-job-footer">
+      {{#is_applied}}
+        <button class="fp-btn fp-btn-success" disabled>✓ Applied</button>
+      {{/is_applied}}
+
+      {{^is_applied}}
+        {{#deadline_passed}}
+          <button class="fp-btn" style="background:#eceff1;color:#546e7a;" disabled>Deadline Passed</button>
+        {{/deadline_passed}}
+
+        {{^deadline_passed}}
+          <a href="{{view_details_url}}" class="fp-btn fp-btn-primary">
+            View Details
+          </a>
+        {{/deadline_passed}}
+      {{/is_applied}}
+    </div>
+  </div>
+
+</div>

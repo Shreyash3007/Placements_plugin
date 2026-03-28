@@ -1,0 +1,1692 @@
+/*
+ * FinTree Placements Plugin — Main Stylesheet
+ * Package: local_finplacements
+ * Description: Styles for all plugin pages: profile, job board, tracker,
+ *              and all admin pages. Follows Moodle's design conventions while
+ *              providing a clean, modern look.
+ */
+
+/* ===================================================================
+   CSS CUSTOM PROPERTIES — Design tokens
+=================================================================== */
+:root {
+  --fp-primary: #1a237e;
+  /* Deep indigo — FinTree brand blue */
+  --fp-primary-light: #3949ab;
+  --fp-primary-pale: #e8eaf6;
+  --fp-accent: #f57c00;
+  /* Warm amber accent */
+  --fp-success: #2e7d32;
+  --fp-success-bg: #e8f5e9;
+  --fp-warning: #e65100;
+  --fp-warning-bg: #fff3e0;
+  --fp-danger: #c62828;
+  --fp-danger-bg: #ffebee;
+  --fp-text: #1a1a2e;
+  --fp-text-muted: #546e7a;
+  --fp-border: #cfd8dc;
+  --fp-surface: #ffffff;
+  --fp-bg: #f5f7fa;
+  --fp-radius: 8px;
+  --fp-radius-sm: 4px;
+  --fp-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  --fp-shadow-lg: 0 4px 20px rgba(0, 0, 0, 0.14);
+  --fp-font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --fp-transition: 0.2s ease;
+}
+
+/* ===================================================================
+   PLUGIN NAVIGATION BAR
+   A visible nav strip embedded inside every plugin page.
+   Ensures navigation is always accessible regardless of theme / drawer state.
+=================================================================== */
+.fp-plugin-nav {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--fp-primary);
+  border-radius: var(--fp-radius);
+  padding: 0 12px;
+  margin-bottom: 24px;
+  box-shadow: var(--fp-shadow-lg);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.fp-plugin-nav-brand {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.90);
+  letter-spacing: 0.03em;
+  padding: 14px 18px 14px 8px;
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+.fp-plugin-nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.fp-plugin-nav-links li a {
+  display: block;
+  padding: 14px 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.82);
+  text-decoration: none;
+  border-radius: 0;
+  transition: background var(--fp-transition), color var(--fp-transition);
+}
+
+.fp-plugin-nav-links li a:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  text-decoration: none;
+}
+
+.fp-plugin-nav-links li a.fp-nav-active {
+  background: rgba(255, 255, 255, 0.20);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: inset 0 -3px 0 #fff;
+}
+
+/* ===================================================================
+   BASE & LAYOUT
+=================================================================== */
+.fp-profile-page,
+.fp-jobboard-page,
+.fp-tracker-page,
+.fp-admin-page {
+  font-family: var(--fp-font);
+  color: var(--fp-text);
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+/* ===================================================================
+   COMPLETION / PROGRESS BAR
+=================================================================== */
+.fp-completion-bar-wrap {
+  background: var(--fp-surface);
+  border: 1px solid var(--fp-border);
+  border-radius: var(--fp-radius);
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  box-shadow: var(--fp-shadow);
+}
+
+.fp-completion-label {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--fp-primary);
+}
+
+.fp-progress-bar-outer {
+  background: #e0e0e0;
+  border-radius: 50px;
+  height: 14px;
+  overflow: hidden;
+}
+
+.fp-progress-bar-inner {
+  background: linear-gradient(90deg, var(--fp-primary-light), var(--fp-primary));
+  height: 100%;
+  border-radius: 50px;
+  transition: width 0.5s ease;
+}
+
+/* ===================================================================
+   PROFILE FORM
+=================================================================== */
+.fp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.fp-form-section {
+  background: var(--fp-surface);
+  border: 1px solid var(--fp-border);
+  border-radius: var(--fp-radius);
+  padding: 28px;
+  box-shadow: var(--fp-shadow);
+}
+
+.fp-section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--fp-primary);
+  margin: 0 0 20px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--fp-primary-pale);
+}
+
+.fp-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.fp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fp-field-wide {
+  grid-column: 1 / -1;
+}
+
+.fp-field label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--fp-text);
+}
+
+.fp-required {
+  color: var(--fp-danger);
+  margin-left: 2px;
+}
+
+.fp-input,
+.fp-select,
+.fp-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--fp-border);
+  border-radius: var(--fp-radius-sm);
+  font-size: 0.9rem;
+  font-family: var(--fp-font);
+  background: var(--fp-bg);
+  color: var(--fp-text);
+  transition: border-color var(--fp-transition), box-shadow var(--fp-transition);
+  box-sizing: border-box;
+}
+
+.fp-input:focus,
+.fp-select:focus,
+.fp-textarea:focus {
+  outline: none;
+  border-color: var(--fp-primary-light);
+  box-shadow: 0 0 0 3px rgba(57, 73, 171, 0.18);
+}
+
+.fp-input[readonly] {
+  background: #f0f0f0;
+  color: var(--fp-text-muted);
+  cursor: not-allowed;
+}
+
+.fp-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.fp-hint {
+  font-size: 0.78rem;
+  color: var(--fp-text-muted);
+  margin-top: 2px;
+}
+
+.fp-field-hint {
+  font-size: 0.78rem;
+  color: #78909c;
+  margin-top: 4px;
+  display: block;
+}
+
+.fp-field-checkbox {
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+}
+
+.fp-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.fp-checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--fp-primary);
+  cursor: pointer;
+}
+
+.fp-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 8px;
+}
+
+/* ===================================================================
+   BUTTONS
+=================================================================== */
+.fp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 28px;
+  border: none;
+  border-radius: var(--fp-radius-sm);
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: var(--fp-font);
+  cursor: pointer;
+  transition: background var(--fp-transition), transform var(--fp-transition), box-shadow var(--fp-transition);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.fp-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--fp-shadow);
+}
+
+.fp-btn:active {
+  transform: translateY(0);
+}
+
+.fp-btn-primary {
+  background: var(--fp-primary);
+  color: #fff;
+}
+
+.fp-btn-primary:hover {
+  background: var(--fp-primary-light);
+}
+
+.fp-btn-secondary {
+  background: #fff;
+  color: var(--fp-primary);
+  border: 2px solid var(--fp-primary);
+}
+
+.fp-btn-secondary:hover {
+  background: var(--fp-primary-pale);
+}
+
+.fp-btn-danger {
+  background: var(--fp-danger);
+  color: #fff;
+}
+
+.fp-btn-danger:hover {
+  background: #b71c1c;
+}
+
+.fp-btn-success {
+  background: var(--fp-success);
+  color: #fff;
+}
+
+.fp-btn-success:hover {
+  background: #1b5e20;
+}
+
+.fp-btn-sm {
+  padding: 6px 14px;
+  font-size: 0.82rem;
+}
+
+.fp-btn:disabled,
+.fp-btn-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ===================================================================
+   BADGES — Status, Score, Reliability
+=================================================================== */
+.fp-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.badge-applied {
+  background: #eceff1;
+  color: #546e7a;
+}
+
+.badge-screened {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.badge-shortlisted {
+  background: #fff8e1;
+  color: #f57f17;
+}
+
+.badge-forwarded {
+  background: #f3e5f5;
+  color: #6a1b9a;
+}
+
+.badge-placed {
+  background: var(--fp-success-bg);
+  color: var(--fp-success);
+}
+
+.badge-rejected {
+  background: var(--fp-danger-bg);
+  color: var(--fp-danger);
+}
+
+.fp-score-badge,
+.fp-reliability-badge {
+  display: inline-block;
+  min-width: 40px;
+  text-align: center;
+  padding: 4px 10px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.score-green,
+.rel-green {
+  background: var(--fp-success-bg);
+  color: var(--fp-success);
+}
+
+.score-amber,
+.rel-amber {
+  background: #fff8e1;
+  color: #f57f17;
+}
+
+.score-gray {
+  background: #eceff1;
+  color: #546e7a;
+}
+
+.rel-red {
+  background: var(--fp-danger-bg);
+  color: var(--fp-danger);
+}
+
+/* Type badges */
+.fp-type-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 50px;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.type-fulltime {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.type-internship {
+  background: #f3e5f5;
+  color: #6a1b9a;
+}
+
+.status-draft {
+  background: #eceff1;
+  color: #546e7a;
+}
+
+.status-active {
+  background: var(--fp-success-bg);
+  color: var(--fp-success);
+}
+
+.status-closed {
+  background: var(--fp-danger-bg);
+  color: var(--fp-danger);
+}
+
+/* ===================================================================
+   JOB BOARD — Incomplete profile banner
+=================================================================== */
+.fp-profile-banner {
+  background: #fff8e1;
+  border: 1.5px solid #ffc107;
+  border-radius: var(--fp-radius);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+
+.fp-profile-banner a {
+  color: var(--fp-primary);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* ===================================================================
+   JOB BOARD — Filter bar
+=================================================================== */
+.fp-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: var(--fp-surface);
+  border: 1px solid var(--fp-border);
+  border-radius: var(--fp-radius);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  box-shadow: var(--fp-shadow);
+}
+
+.fp-filters select,
+.fp-filters input[type="text"] {
+  padding: 8px 12px;
+  border: 1.5px solid var(--fp-border);
+  border-radius: var(--fp-radius-sm);
+  font-size: 0.88rem;
+  font-family: var(--fp-font);
+  background: var(--fp-bg);
+  color: var(--fp-text);
+  min-width: 160px;
+}
+
+.fp-filters select:focus,
+.fp-filters input[type="text"]:focus {
+  outline: none;
+  border-color: var(--fp-primary-light);
+}
+
+/* ===================================================================
+   JOB BOARD — Job cards & Detail View
+=================================================================== */
+.fp-jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.fp-job-card {
+  background: var(--fp-surface);
+  border: 1px solid var(--fp-border);
+  border-radius: var(--fp-radius);
+  padding: 24px;
+  box-shadow: var(--fp-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: box-shadow var(--fp-transition), transform var(--fp-transition);
+}
+
+.fp-job-card:hover {
+  box-shadow: var(--fp-shadow-lg);
+  transform: translateY(-2px);
+}
+
+.fp-opening-detail-card {
+  background: var(--fp-surface);
+  border: 1px solid var(--fp-border);
+  border-radius: var(--fp-radius);
+  box-shadow: var(--fp-shadow-lg);
+  overflow: hidden;
+}
+
+.fp-od-header {
+  padding: 32px 40px;
+  background: #f8f9fa;
+  border-bottom: 1px solid var(--fp-border);
+}
+
+.fp-od-title-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.fp-od-title-row h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--fp-primary);
+  margin: 0;
+}
+
+.fp-od-company {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--fp-text);
+  margin: 0;
+}
+
+.fp-od-body {
+  padding: 32px 40px;
+}
+
+.fp-od-section {
+  margin-bottom: 32px;
+}
+
+.fp-od-section h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--fp-primary);
+  margin-bottom: 12px;
+  border-bottom: 2px solid var(--fp-primary-pale);
+  padding-bottom: 8px;
+}
+
+.fp-od-text {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--fp-text);
+}
+
+.fp-od-footer {
+  padding: 24px 40px;
+  background: #fafafa;
+  border-top: 1px solid var(--fp-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.fp-jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.fp-job-card {
+  background: var(--fp-surface);
+  border: 1px solid var(--fp-border);
+  border-radius: var(--fp-radius);
+  padding: 24px;
+  box-shadow: var(--fp-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: box-shadow var(--fp-transition), transform var(--fp-transition);
+}
+
+.fp-job-card:hover {
+  box-shadow: var(--fp-shadow-lg);
+  transform: translateY(-2px);
+}
+
+.fp-job-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.fp-job-id {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--fp-text-muted);
+  background: var(--fp-primary-pale);
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.fp-job-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--fp-primary);
+  margin: 4px 0;
+}
+
+.fp-job-company {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--fp-text);
+}
+
+.fp-job-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.fp-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--fp-bg);
+  border: 1px solid var(--fp-border);
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--fp-text);
+}
+
+.fp-deadline {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--fp-text-muted);
+}
+
+.fp-deadline.deadline-urgent {
+  color: var(--fp-danger);
+}
+
+.fp-job-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ===================================================================
+   TRACKER — Application status table
+=================================================================== */
+.fp-tracker-page .fp-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.fp-table-wrap {
+  background: var(--fp-surface);
+  border: 1px solid var(--fp-border);
+  border-radius: var(--fp-radius);
+  overflow-x: auto;
+  box-shadow: var(--fp-shadow);
+}
+
+.fp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.fp-table th {
+  background: var(--fp-primary-pale);
+  color: var(--fp-primary);
+  font-weight: 700;
+  text-align: left;
+  padding: 13px 16px;
+  border-bottom: 2px solid var(--fp-border);
+  white-space: nowrap;
+}
+
+.fp-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--fp-border);
+  color: var(--fp-text);
+  vertical-align: middle;
+}
+
+.fp-table tr:last-child td {
+  border-bottom: none;
+}
+
+.fp-table tr:hover td {
+  background: #fafafa;
+}
+
+/* ===================================================================
+   ADMIN PAGES
+=================================================================== */
+.fp-admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.fp-admin-header h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--fp-primary);
+  margin: 0;
+}
+
+.fp-admin-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: var(--fp-surface);
+  border: 1px solid var(--fp-border);
+  border-radius: var(--fp-radius);
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--fp-shadow);
+}
+
+.fp-admin-filters label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--fp-text-muted);
+  margin-bottom: 2px;
+  display: block;
+}
+
+.fp-admin-filters select,
+.fp-admin-filters input {
+  padding: 7px 12px;
+  border: 1.5px solid var(--fp-border);
+  border-radius: var(--fp-radius-sm);
+  font-size: 0.85rem;
+  background: var(--fp-bg);
+  color: var(--fp-text);
+  min-width: 140px;
+}
+
+.fp-admin-filters select:focus,
+.fp-admin-filters input:focus {
+  outline: none;
+  border-color: var(--fp-primary-light);
+}
+
+.fp-bulk-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 16px 20px;
+  background: var(--fp-primary-pale);
+  border-radius: 0 0 var(--fp-radius) var(--fp-radius);
+  border-top: 1px solid var(--fp-border);
+}
+
+/* ===================================================================
+   OPENING EDIT FORM
+=================================================================== */
+.fp-opening-form {
+  background: var(--fp-surface);
+  border: 1px solid var(--fp-border);
+  border-radius: var(--fp-radius);
+  padding: 32px;
+  box-shadow: var(--fp-shadow);
+}
+
+.fp-opening-form .fp-form-grid {
+  margin-top: 0;
+}
+
+.fp-job-id-result {
+  background: var(--fp-primary);
+  color: #fff;
+  border-radius: var(--fp-radius);
+  padding: 20px 28px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.fp-job-id-result .fp-job-id-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.fp-job-id-result .fp-job-id-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+/* Conditional fields for internship vs fulltime */
+.fp-fulltime-fields,
+.fp-internship-fields {
+  display: none;
+  grid-column: 1 / -1;
+}
+
+/* ===================================================================
+   SHORTLIST CONFIRMATION PAGE
+=================================================================== */
+.fp-shortlist-page .fp-candidate-shortlist-card {
+  background: var(--fp-surface);
+  border: 1px solid var(--fp-border);
+  border-radius: var(--fp-radius);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  box-shadow: var(--fp-shadow);
+}
+
+.fp-shortlist-page .fp-wa-preview {
+  background: #e8f5e9;
+  border-left: 4px solid var(--fp-success);
+  border-radius: var(--fp-radius-sm);
+  padding: 14px 18px;
+  margin-top: 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: #215732;
+}
+
+.fp-shortlist-page .fp-sheets-preview {
+  background: #e8eaf6;
+  border-left: 4px solid var(--fp-primary);
+  border-radius: var(--fp-radius-sm);
+  padding: 14px 18px;
+  margin-top: 12px;
+  overflow-x: auto;
+}
+
+.fp-sheets-row-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.fp-sheets-row-table th {
+  background: var(--fp-primary-pale);
+  color: var(--fp-primary);
+  padding: 6px 10px;
+  text-align: left;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.fp-sheets-row-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--fp-border);
+  white-space: nowrap;
+}
+
+/* ===================================================================
+   EMPTY STATES
+=================================================================== */
+.fp-empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--fp-text-muted);
+}
+
+.fp-empty-state .fp-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  opacity: 0.4;
+}
+
+.fp-empty-state h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--fp-text);
+  margin: 0 0 8px;
+}
+
+.fp-empty-state p {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* ===================================================================
+   ALERTS / NOTIFICATIONS OVERRIDE
+=================================================================== */
+.fp-notice-info {
+  background: #e3f2fd;
+  border-left: 4px solid #1565c0;
+  border-radius: var(--fp-radius-sm);
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+}
+
+/* ===================================================================
+   RESPONSIVE — Mobile
+=================================================================== */
+@media (max-width: 768px) {
+  .fp-jobs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fp-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fp-admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .fp-table {
+    font-size: 0.82rem;
+  }
+
+  .fp-table th,
+  .fp-table td {
+    padding: 9px 10px;
+  }
+
+  .fp-filters,
+  .fp-admin-filters {
+    flex-direction: column;
+  }
+
+  .fp-bulk-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .fp-plugin-nav {
+    padding: 0 6px;
+  }
+
+  .fp-plugin-nav-links li a {
+    padding: 12px 12px;
+    font-size: 0.8rem;
+  }
+
+  .fp-pipeline {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+}
+
+/* ===================================================================
+   STATUS PIPELINE — Tracker application progress bar
+=================================================================== */
+.fp-pipeline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0 2px;
+  flex-wrap: nowrap;
+}
+
+.fp-pipeline-step {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: #eceff1;
+  color: #90a4ae;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+}
+
+.fp-pipeline-step.fp-step-done {
+  background: var(--fp-success-bg);
+  color: var(--fp-success);
+}
+
+.fp-pipeline-step.fp-step-current {
+  background: var(--fp-primary);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(26, 35, 126, 0.25);
+}
+
+.fp-pipeline-step.fp-step-rejected {
+  background: var(--fp-danger-bg);
+  color: var(--fp-danger);
+  font-weight: 700;
+}
+
+.fp-pipeline-arrow {
+  font-size: 1rem;
+  color: #b0bec5;
+  user-select: none;
+}
+
+.fp-pipeline-arrow.fp-arrow-done {
+  color: var(--fp-success);
+}
+
+.fp-pipeline-row td {
+  border-bottom: 2px solid var(--fp-border) !important;
+}
+
+.fp-pipeline-row:hover td {
+  background: #fafafa !important;
+}
+
+/* ===================================================================
+   WA PREVIEW — ensure <pre> renders correctly
+=================================================================== */
+pre.fp-wa-preview {
+  background: #e8f5e9;
+  border-left: 4px solid var(--fp-success);
+  border-radius: var(--fp-radius-sm);
+  padding: 14px 18px;
+  margin-top: 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #215732;
+  overflow-x: auto;
+}
+
+/* ===================================================================
+   JOB BOARD ENHANCEMENTS — Advanced Filters, Pagination, Loading
+=================================================================== */
+
+/* Enhanced Filter Bar */
+.fp-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: var(--fp-radius);
+  box-shadow: var(--fp-shadow);
+}
+
+.fp-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fp-filter-group label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #546e7a;
+}
+
+.fp-filter-group input[type="text"],
+.fp-filter-group select {
+  padding: 10px 12px;
+  border: 1px solid #cfd8dc;
+  border-radius: var(--fp-radius-sm);
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+}
+
+.fp-filter-group input[type="text"]:focus,
+.fp-filter-group select:focus {
+  outline: none;
+  border-color: var(--fp-primary);
+}
+
+.fp-checkbox-group label {
+  flex-direction: row !important;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 500 !important;
+}
+
+.fp-checkbox-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.fp-filter-actions {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+/* Job Count Bar */
+.fp-job-count-bar {
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  background: #f5f7fa;
+  border-radius: var(--fp-radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--fp-text-muted);
+}
+
+/* Loading State */
+.fp-jobs-grid.fp-loading {
+  position: relative;
+  min-height: 200px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.fp-jobs-grid.fp-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 4px solid #e0e0e0;
+  border-top-color: var(--fp-primary);
+  border-radius: 50%;
+  animation: fp-spin 0.8s linear infinite;
+}
+
+@keyframes fp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Enhanced Job Card with Logo */
+.fp-job-card {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: var(--fp-radius);
+  transition: box-shadow 0.2s, transform 0.2s;
+  animation: fp-fade-in 0.3s ease-out;
+}
+
+.fp-job-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+@keyframes fp-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fp-company-logo {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  border-radius: var(--fp-radius);
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.fp-company-logo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.fp-job-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fp-job-info-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--fp-text-muted);
+}
+
+.fp-posted-date {
+  color: #78909c;
+}
+
+.fp-applicant-count {
+  color: #78909c;
+}
+
+/* Pagination */
+.fp-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+  padding: 16px 0;
+}
+
+.fp-pagination .fp-page-info {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--fp-text-muted);
+}
+
+.fp-pagination-btn {
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .fp-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .fp-job-card {
+    flex-direction: column;
+  }
+
+  .fp-company-logo {
+    width: 60px;
+    height: 60px;
+  }
+
+  .fp-pagination {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
+
+/* ===================================================================
+   TRACKER ENHANCEMENTS — Status Tabs, Search, Pipeline
+=================================================================== */
+
+/* Status Filter Tabs */
+.fp-status-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding: 0;
+  overflow-x: auto;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.fp-status-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #f5f7fa;
+  border: 1px solid #e0e0e0;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--fp-text-muted);
+  text-decoration: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.fp-status-tab:hover {
+  background: #e8eaf6;
+  color: var(--fp-primary);
+}
+
+.fp-status-tab.active {
+  background: var(--fp-primary);
+  border-color: var(--fp-primary);
+  color: #fff;
+}
+
+.fp-tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.fp-status-tab.active .fp-tab-count {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Tracker Controls (Search + Sort) */
+.fp-tracker-controls {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: var(--fp-radius);
+  box-shadow: var(--fp-shadow);
+}
+
+.fp-tracker-search {
+  flex: 1;
+  position: relative;
+}
+
+.fp-tracker-search input {
+  width: 100%;
+  padding: 10px 40px 10px 12px;
+  border: 1px solid #cfd8dc;
+  border-radius: var(--fp-radius-sm);
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+}
+
+.fp-tracker-search input:focus {
+  outline: none;
+  border-color: var(--fp-primary);
+}
+
+.fp-search-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  color: #9e9e9e;
+  pointer-events: none;
+}
+
+.fp-tracker-sort {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fp-tracker-sort label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #546e7a;
+}
+
+.fp-tracker-sort select {
+  padding: 10px 12px;
+  border: 1px solid #cfd8dc;
+  border-radius: var(--fp-radius-sm);
+  font-size: 0.9rem;
+  background: #fff;
+  cursor: pointer;
+}
+
+.fp-tracker-count-bar {
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  background: #f5f7fa;
+  border-radius: var(--fp-radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--fp-text-muted);
+}
+
+/* Enhanced Pipeline with Timestamps */
+.fp-pipeline-timestamp {
+  display: inline-block;
+  margin-left: 12px;
+  padding: 2px 8px;
+  background: #e3f2fd;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: #1976d2;
+  font-weight: 500;
+}
+
+.fp-pipeline-row td {
+  padding: 0;
+}
+
+/* Tracker Table Responsive */
+@media (max-width: 1024px) {
+  #fp-tracker-table thead {
+    display: none;
+  }
+
+  #fp-tracker-table tbody tr {
+    display: block;
+    margin-bottom: 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: var(--fp-radius);
+    background: #fff;
+  }
+
+  #fp-tracker-table tbody td {
+    display: block;
+    padding: 8px 12px;
+    border: none;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  #fp-tracker-table tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--fp-text-muted);
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.8rem;
+  }
+
+  .fp-pipeline-row td {
+    padding: 8px 12px;
+  }
+}
+
+/* Loading State for Tracker */
+#fp-tracker-container.fp-loading {
+  position: relative;
+  min-height: 200px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+#fp-tracker-container.fp-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 4px solid #e0e0e0;
+  border-top-color: var(--fp-primary);
+  border-radius: 50%;
+  animation: fp-spin 0.8s linear infinite;
+}
+
+/* ===================================================================
+   PROFILE ENHANCEMENTS — Collapsible Sections, Progress Indicators
+=================================================================== */
+
+/* Profile Form Sections */
+.fp-section {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: var(--fp-radius);
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.fp-section:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.fp-section-expanded {
+  border-left: 4px solid var(--fp-primary);
+}
+
+.fp-section-collapsed {
+  border-left: 4px solid #cfd8dc;
+}
+
+/* Section Header (Clickable) */
+.fp-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: #f5f7fa;
+  cursor: pointer;
+  transition: background 0.2s;
+  user-select: none;
+}
+
+.fp-section-header:hover {
+  background: #e8eaf6;
+}
+
+.fp-section-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--fp-primary);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.fp-section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--fp-text);
+  flex: 1;
+}
+
+.fp-section-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.fp-status-complete {
+  background: var(--fp-success-bg);
+  color: var(--fp-success);
+}
+
+.fp-status-incomplete {
+  background: var(--fp-warning-bg);
+  color: var(--fp-warning);
+}
+
+/* Section Progress Bar */
+.fp-section-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  max-width: 200px;
+}
+
+.fp-section-progress-bar-wrap {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.fp-section-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--fp-primary-light), var(--fp-primary));
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.fp-section-progress-text {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--fp-text-muted);
+  white-space: nowrap;
+}
+
+/* Section Content */
+.fp-section-content {
+  padding: 20px;
+  display: block;
+}
+
+/* Success/Error Notifications */
+.fp-success-notification {
+  background: var(--fp-success-bg);
+  border-left: 4px solid var(--fp-success);
+  color: var(--fp-success);
+  padding: 14px 18px;
+  border-radius: var(--fp-radius-sm);
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.fp-error-notification {
+  background: var(--fp-danger-bg);
+  border-left: 4px solid var(--fp-danger);
+  color: var(--fp-danger);
+  padding: 14px 18px;
+  border-radius: var(--fp-radius-sm);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+/* Form Actions */
+.fp-form-actions {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 2px solid #e0e0e0;
+  text-align: center;
+}
+
+.fp-btn-lg {
+  padding: 14px 32px;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* Profile Form Grid */
+.fp-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.fp-field-wide {
+  grid-column: 1 / -1;
+}
+
+/* Field Required Marker */
+.fp-required {
+  color: var(--fp-danger);
+  font-weight: 700;
+}
+
+/* Mobile Responsive for Profile */
+@media (max-width: 768px) {
+  .fp-section-header {
+    flex-wrap: wrap;
+  }
+
+  .fp-section-progress {
+    order: 3;
+    width: 100%;
+    max-width: none;
+    margin-top: 8px;
+  }
+
+  .fp-form-grid {
+    grid-template-columns: 1fr;
+  }
+}

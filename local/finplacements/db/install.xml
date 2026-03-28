@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/finplacements/db" VERSION="20260326" COMMENT="XMLDB file for local/finplacements"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
+  <TABLES>
+
+    <!-- ====================================================
+         TABLE: finplacements_candidates
+         One row per Moodle user — stores the placement profile.
+    ==================================================== -->
+    <TABLE NAME="finplacements_candidates" COMMENT="Placement profiles for candidates">
+      <FIELDS>
+        <FIELD NAME="id"               TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid"           TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="false"
+               COMMENT="FK mdl_user.id"/>
+        <FIELD NAME="fullname"         TYPE="char" LENGTH="255" NOTNULL="true"  DEFAULT=""/>
+        <FIELD NAME="phone"            TYPE="char" LENGTH="20"  NOTNULL="true"  DEFAULT=""/>
+        <FIELD NAME="email"            TYPE="char" LENGTH="255" NOTNULL="true"  DEFAULT=""/>
+        <FIELD NAME="city"             TYPE="char" LENGTH="100" NOTNULL="true"  DEFAULT=""/>
+        <FIELD NAME="state"            TYPE="char" LENGTH="100" NOTNULL="true"  DEFAULT=""/>
+        <FIELD NAME="experience_band"  TYPE="char" LENGTH="20"  NOTNULL="true"  DEFAULT=""
+               COMMENT="fresher|1-3|3-5|5-10|10+"/>
+        <FIELD NAME="current_employer" TYPE="char" LENGTH="255" NOTNULL="false"/>
+        <FIELD NAME="current_ctc"      TYPE="char" LENGTH="50"  NOTNULL="false"/>
+        <FIELD NAME="designation"      TYPE="char" LENGTH="255" NOTNULL="false"/>
+        <FIELD NAME="tenth_pct"        TYPE="char" LENGTH="10"  NOTNULL="false"/>
+        <FIELD NAME="twelfth_pct"      TYPE="char" LENGTH="10"  NOTNULL="false"/>
+        <FIELD NAME="ug_status"        TYPE="char" LENGTH="20"  NOTNULL="false"
+               COMMENT="completed|pursuing"/>
+        <FIELD NAME="ug_field"         TYPE="char" LENGTH="255" NOTNULL="false"/>
+        <FIELD NAME="ug_gpa"           TYPE="char" LENGTH="20"  NOTNULL="false"/>
+        <FIELD NAME="pg_status"        TYPE="char" LENGTH="20"  NOTNULL="false"
+               COMMENT="completed|pursuing"/>
+        <FIELD NAME="pg_field"         TYPE="char" LENGTH="255" NOTNULL="false"/>
+        <FIELD NAME="pg_gpa"           TYPE="char" LENGTH="20"  NOTNULL="false"/>
+        <FIELD NAME="cfa_level"        TYPE="char" LENGTH="30"  NOTNULL="false"
+               COMMENT="none|level1|level2|level3|charter"/>
+        <FIELD NAME="frm_level"        TYPE="char" LENGTH="30"  NOTNULL="false"
+               COMMENT="none|part1|part2|charter"/>
+        <FIELD NAME="other_certs"      TYPE="char" LENGTH="255" NOTNULL="false"/>
+        <FIELD NAME="fm_cert"          TYPE="int"  LENGTH="1"   NOTNULL="false" DEFAULT="0"/>
+        <FIELD NAME="courses_done"     TYPE="text"              NOTNULL="false"
+               COMMENT="JSON array of FinTree courses completed"/>
+        <FIELD NAME="resume_url"       TYPE="text"              NOTNULL="false"/>
+        <FIELD NAME="photo_url"        TYPE="text"              NOTNULL="false"/>
+        <FIELD NAME="profile_complete" TYPE="int"  LENGTH="1"   NOTNULL="false" DEFAULT="0"/>
+        <FIELD NAME="profile_score"    TYPE="int"  LENGTH="3"   NOTNULL="false" DEFAULT="0"
+               COMMENT="0-100 completeness score"/>
+        <FIELD NAME="timecreated"      TYPE="int"  LENGTH="10"  NOTNULL="true"  DEFAULT="0"/>
+        <FIELD NAME="timemodified"     TYPE="int"  LENGTH="10"  NOTNULL="true"  DEFAULT="0"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="userid"  TYPE="unique"  FIELDS="userid"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="city" UNIQUE="false" FIELDS="city"/>
+        <INDEX NAME="experience_band" UNIQUE="false" FIELDS="experience_band"/>
+        <INDEX NAME="cfa_level" UNIQUE="false" FIELDS="cfa_level"/>
+      </INDEXES>
+    </TABLE>
+
+    <!-- ====================================================
+         TABLE: finplacements_openings
+         One row per job opening created by admin.
+    ==================================================== -->
+    <TABLE NAME="finplacements_openings" COMMENT="Job openings posted by FinTree admin">
+      <FIELDS>
+        <FIELD NAME="id"                  TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="jobid"               TYPE="char" LENGTH="30" NOTNULL="true" DEFAULT=""
+               COMMENT="Format: FNTR-YYMMDD-A304"/>
+        <FIELD NAME="title"               TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT=""/>
+        <FIELD NAME="company"             TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT=""/>
+        <FIELD NAME="location"            TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT=""/>
+        <FIELD NAME="employment_type"     TYPE="char" LENGTH="20"  NOTNULL="true" DEFAULT=""
+               COMMENT="fulltime|internship"/>
+        <FIELD NAME="experience_required" TYPE="char" LENGTH="20"  NOTNULL="true" DEFAULT=""
+               COMMENT="fresher|1-3|3-5|5-10|10+|any"/>
+        <FIELD NAME="min_ctc"             TYPE="char" LENGTH="50"  NOTNULL="false"/>
+        <FIELD NAME="max_ctc"             TYPE="char" LENGTH="50"  NOTNULL="false"/>
+        <FIELD NAME="stipend"             TYPE="char" LENGTH="50"  NOTNULL="false"
+               COMMENT="For internships only"/>
+        <FIELD NAME="cfa_required"        TYPE="char" LENGTH="30"  NOTNULL="false"
+               COMMENT="none|level1|level2|level3|charter"/>
+        <FIELD NAME="frm_required"        TYPE="char" LENGTH="30"  NOTNULL="false"
+               COMMENT="none|part1|part2|charter"/>
+        <FIELD NAME="qualification_notes" TYPE="text"              NOTNULL="false"/>
+        <FIELD NAME="jd_text"             TYPE="text"              NOTNULL="false"
+               COMMENT="Full job description text"/>
+        <FIELD NAME="role_overview"       TYPE="text"              NOTNULL="false"/>
+        <FIELD NAME="broadcast_date"      TYPE="int"  LENGTH="10"  NOTNULL="false"/>
+        <FIELD NAME="deadline"            TYPE="int"  LENGTH="10"  NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="status"              TYPE="char" LENGTH="20"  NOTNULL="true" DEFAULT="draft"
+               COMMENT="draft|active|closed"/>
+        <FIELD NAME="community_target"    TYPE="char" LENGTH="100" NOTNULL="false"
+               COMMENT="Which WhatsApp community to broadcast to"/>
+        <FIELD NAME="company_logo_url"    TYPE="text"              NOTNULL="false"
+               COMMENT="Company logo image URL"/>
+        <FIELD NAME="timecreated"         TYPE="int"  LENGTH="10"  NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="createdby"           TYPE="int"  LENGTH="10"  NOTNULL="true" DEFAULT="0"
+               COMMENT="FK mdl_user.id"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="jobid"   TYPE="unique"  FIELDS="jobid"/>
+      </KEYS>
+    </TABLE>
+
+    <!-- ====================================================
+         TABLE: finplacements_applications
+         One row per candidate-opening application.
+    ==================================================== -->
+    <TABLE NAME="finplacements_applications" COMMENT="Candidate applications for job openings">
+      <FIELDS>
+        <FIELD NAME="id"              TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="candidateid"     TYPE="int"  LENGTH="10" NOTNULL="true" DEFAULT="0"
+               COMMENT="FK finplacements_candidates.id"/>
+        <FIELD NAME="openingid"       TYPE="int"  LENGTH="10" NOTNULL="true" DEFAULT="0"
+               COMMENT="FK finplacements_openings.id"/>
+        <FIELD NAME="applied_date"    TYPE="int"  LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="status"          TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="applied"
+               COMMENT="applied|screened|shortlisted|forwarded|rejected|placed"/>
+        <FIELD NAME="auto_score"      TYPE="int"  LENGTH="3"  NOTNULL="false" DEFAULT="0"
+               COMMENT="0-100 fit score calculated on apply"/>
+        <FIELD NAME="shortlisted_by"  TYPE="int"  LENGTH="10" NOTNULL="false"
+               COMMENT="FK mdl_user.id — admin who shortlisted"/>
+        <FIELD NAME="shortlisted_date" TYPE="int" LENGTH="10" NOTNULL="false"/>
+        <FIELD NAME="wa_sent"         TYPE="int"  LENGTH="1"  NOTNULL="false" DEFAULT="0"/>
+        <FIELD NAME="email_sent"      TYPE="int"  LENGTH="1"  NOTNULL="false" DEFAULT="0"/>
+        <FIELD NAME="admin_notes"     TYPE="text"             NOTNULL="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="candidateid" UNIQUE="false" FIELDS="candidateid"/>
+        <INDEX NAME="openingid"   UNIQUE="false" FIELDS="openingid"/>
+        <INDEX NAME="status"      UNIQUE="false" FIELDS="status"/>
+      </INDEXES>
+    </TABLE>
+
+    <!-- ====================================================
+         TABLE: finplacements_reliability
+         One row per candidate — tracks reliability score.
+    ==================================================== -->
+    <TABLE NAME="finplacements_reliability" COMMENT="Candidate reliability scores">
+      <FIELDS>
+        <FIELD NAME="id"                TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="candidateid"       TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"
+               COMMENT="FK finplacements_candidates.id"/>
+        <FIELD NAME="score"             TYPE="int" LENGTH="3"  NOTNULL="true" DEFAULT="70"
+               COMMENT="0-100, starts at 70"/>
+        <FIELD NAME="times_applied"     TYPE="int" LENGTH="5"  NOTNULL="false" DEFAULT="0"/>
+        <FIELD NAME="times_shortlisted" TYPE="int" LENGTH="5"  NOTNULL="false" DEFAULT="0"/>
+        <FIELD NAME="times_forwarded"   TYPE="int" LENGTH="5"  NOTNULL="false" DEFAULT="0"/>
+        <FIELD NAME="times_placed"      TYPE="int" LENGTH="5"  NOTNULL="false" DEFAULT="0"/>
+        <FIELD NAME="offers_backed_out" TYPE="int" LENGTH="5"  NOTNULL="false" DEFAULT="0"/>
+        <FIELD NAME="no_shows"          TYPE="int" LENGTH="5"  NOTNULL="false" DEFAULT="0"/>
+        <FIELD NAME="last_updated"      TYPE="int" LENGTH="10" NOTNULL="true"  DEFAULT="0"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary"     TYPE="primary" FIELDS="id"/>
+        <KEY NAME="candidateid" TYPE="unique"  FIELDS="candidateid"/>
+      </KEYS>
+    </TABLE>
+
+    <!-- ====================================================
+         TABLE: finplacements_wa_log
+         WhatsApp mock message log — every message that would
+         be sent is recorded here for verification.
+    ==================================================== -->
+    <TABLE NAME="finplacements_wa_log" COMMENT="Mock WhatsApp message log">
+      <FIELDS>
+        <FIELD NAME="id"          TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="phone"       TYPE="char" LENGTH="30" NOTNULL="true" DEFAULT=""/>
+        <FIELD NAME="message"     TYPE="text"             NOTNULL="true"/>
+        <FIELD NAME="timecreated" TYPE="int"  LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="status"      TYPE="char" LENGTH="30" NOTNULL="true" DEFAULT="mock_logged"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+
+    <!-- ====================================================
+         TABLE: finplacements_sheets_log
+         Google Sheets mock sync log — every row that would
+         be sent to Sheets is recorded here.
+    ==================================================== -->
+    <TABLE NAME="finplacements_sheets_log" COMMENT="Mock Google Sheets sync log">
+      <FIELDS>
+        <FIELD NAME="id"          TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="row_data"    TYPE="text"             NOTNULL="true"
+               COMMENT="JSON-encoded row matching recruiter sheet format"/>
+        <FIELD NAME="timecreated" TYPE="int"  LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="status"      TYPE="char" LENGTH="30" NOTNULL="true" DEFAULT="mock_logged"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+
+  </TABLES>
+</XMLDB>

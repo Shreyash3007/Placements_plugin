@@ -1,0 +1,180 @@
+<div class="fp-profile-page">
+
+  <div class="fp-page-header">
+    <a href="{{back_url}}" class="fp-btn fp-btn-secondary fp-btn-sm" style="margin-bottom: 20px;">← Back to Job Details</a>
+  </div>
+
+  <div style="background:var(--fp-primary-pale); border-left:4px solid var(--fp-primary); padding:20px 24px; border-radius:var(--fp-radius); margin-bottom:32px;">
+    <h3 style="margin:0 0 8px; color:var(--fp-primary); font-size:1.3rem;">Application Review</h3>
+    <p style="margin:0; font-size:1rem; color:var(--fp-text);">You are applying for <strong>{{opening.title}}</strong> at <strong>{{opening.company}}</strong>.</p>
+    <p style="margin:4px 0 0; font-size:0.95rem; color:var(--fp-text-muted);">Please review your profile details below. If you change any data here (like adding a custom resume link), it will be updated perfectly for this application and saved to your master profile.</p>
+  </div>
+
+  {{#errors}}
+  <div class="alert alert-danger mt-3">{{.}}</div>
+  {{/errors}}
+
+  <form method="post" action="{{form_action}}" class="fp-form">
+    <input type="hidden" name="sesskey" value="{{sesskey}}">
+    <input type="hidden" name="openingid" value="{{opening.id}}">
+
+    <!-- ===== SECTION: Personal Information ===== -->
+    <div class="fp-form-section">
+      <h3 class="fp-section-title">Personal Information</h3>
+      <div class="fp-form-grid">
+        <div class="fp-field">
+          <label for="fp_fullname">Full Name <span class="fp-required">*</span></label>
+          <input type="text" id="fp_fullname" name="fullname" value="{{candidate.fullname}}" class="fp-input" required>
+        </div>
+        <div class="fp-field">
+          <label for="fp_email">Email Address</label>
+          <input type="email" id="fp_email" name="email" value="{{candidate.email}}" class="fp-input" readonly>
+          <small class="fp-hint">Auto-populated from your Moodle account.</small>
+        </div>
+        <div class="fp-field">
+          <label for="fp_phone">Phone Number <span class="fp-required">*</span></label>
+          <input type="tel" id="fp_phone" name="phone" value="{{candidate.phone}}" placeholder="+91 9XXXXXXXXX" class="fp-input" required>
+        </div>
+        <div class="fp-field">
+          <label for="fp_city">City <span class="fp-required">*</span></label>
+          <input type="text" id="fp_city" name="city" value="{{candidate.city}}" placeholder="e.g. Mumbai" class="fp-input" required>
+        </div>
+        <div class="fp-field">
+          <label for="fp_state">State <span class="fp-required">*</span></label>
+          <input type="text" id="fp_state" name="state" value="{{candidate.state}}" placeholder="e.g. Maharashtra" class="fp-input" required>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION: Work Experience ===== -->
+    <div class="fp-form-section">
+      <h3 class="fp-section-title">Work Experience</h3>
+      <div class="fp-form-grid">
+        <div class="fp-field">
+          <label for="fp_experience_band">Years of Experience <span class="fp-required">*</span></label>
+          <select id="fp_experience_band" name="experience_band" class="fp-select" required>
+            <option value="">— Select —</option>
+            {{#exp_bands}}
+              <option value="{{val}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+            {{/exp_bands}}
+          </select>
+        </div>
+        <div class="fp-field">
+          <label for="fp_current_employer">Current Employer</label>
+          <input type="text" id="fp_current_employer" name="current_employer" value="{{candidate.current_employer}}" placeholder="Leave blank if fresher" class="fp-input">
+        </div>
+        <div class="fp-field">
+          <label for="fp_designation">Designation / Job Title</label>
+          <input type="text" id="fp_designation" name="designation" value="{{candidate.designation}}" placeholder="e.g. Equity Research Analyst" class="fp-input">
+        </div>
+        <div class="fp-field">
+          <label for="fp_current_ctc">Current CTC (per annum)</label>
+          <input type="text" id="fp_current_ctc" name="current_ctc" value="{{candidate.current_ctc}}" placeholder="e.g. 6 LPA or 600000" class="fp-input">
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION: Academic Background ===== -->
+    <div class="fp-form-section">
+      <h3 class="fp-section-title">Academic Background</h3>
+      <div class="fp-form-grid">
+        <div class="fp-field">
+          <label for="fp_tenth_pct">10th Percentage / CGPA</label>
+          <input type="text" id="fp_tenth_pct" name="tenth_pct" value="{{candidate.tenth_pct}}" placeholder="e.g. 85.5" class="fp-input">
+        </div>
+        <div class="fp-field">
+          <label for="fp_twelfth_pct">12th Percentage / CGPA</label>
+          <input type="text" id="fp_twelfth_pct" name="twelfth_pct" value="{{candidate.twelfth_pct}}" placeholder="e.g. 82.0" class="fp-input">
+        </div>
+        <div class="fp-field">
+          <label for="fp_ug_status">Undergraduate Degree</label>
+          <select id="fp_ug_status" name="ug_status" class="fp-select">
+            <option value="">— Select —</option>
+            <option value="completed" {{#candidate.ug_status_completed}}selected{{/candidate.ug_status_completed}}>Completed</option>
+            <option value="pursuing"  {{#candidate.ug_status_pursuing}}selected{{/candidate.ug_status_pursuing}}>Pursuing</option>
+          </select>
+        </div>
+        <div class="fp-field">
+          <label for="fp_ug_field">UG Field / Specialisation</label>
+          <input type="text" id="fp_ug_field" name="ug_field" value="{{candidate.ug_field}}" placeholder="e.g. B.Com, BBA" class="fp-input">
+        </div>
+        <div class="fp-field">
+          <label for="fp_ug_gpa">UG GPA / Percentage</label>
+          <input type="text" id="fp_ug_gpa" name="ug_gpa" value="{{candidate.ug_gpa}}" placeholder="e.g. 78%" class="fp-input">
+        </div>
+        <div class="fp-field">
+          <label for="fp_pg_status">Postgraduate Degree</label>
+          <select id="fp_pg_status" name="pg_status" class="fp-select">
+            <option value="">— None / Not Applicable —</option>
+            <option value="completed" {{#candidate.pg_status_completed}}selected{{/candidate.pg_status_completed}}>Completed</option>
+            <option value="pursuing"  {{#candidate.pg_status_pursuing}}selected{{/candidate.pg_status_pursuing}}>Pursuing</option>
+          </select>
+        </div>
+        <div class="fp-field">
+          <label for="fp_pg_field">PG Field / Specialisation</label>
+          <input type="text" id="fp_pg_field" name="pg_field" value="{{candidate.pg_field}}" placeholder="e.g. MBA Finance" class="fp-input">
+        </div>
+        <div class="fp-field">
+          <label for="fp_pg_gpa">PG GPA / Percentage</label>
+          <input type="text" id="fp_pg_gpa" name="pg_gpa" value="{{candidate.pg_gpa}}" placeholder="e.g. 82%" class="fp-input">
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION: Professional Certifications ===== -->
+    <div class="fp-form-section">
+      <h3 class="fp-section-title">Professional Certifications</h3>
+      <div class="fp-form-grid">
+        <div class="fp-field">
+          <label for="fp_cfa_level">CFA Level Achieved <span class="fp-required">*</span></label>
+          <select id="fp_cfa_level" name="cfa_level" class="fp-select" required>
+            {{#cfa_opts}}
+              <option value="{{val}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+            {{/cfa_opts}}
+          </select>
+        </div>
+        <div class="fp-field">
+          <label for="fp_frm_level">FRM Level Achieved</label>
+          <select id="fp_frm_level" name="frm_level" class="fp-select">
+            {{#frm_opts}}
+              <option value="{{val}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+            {{/frm_opts}}
+          </select>
+        </div>
+        <div class="fp-field">
+          <label for="fp_other_certs">Other Certifications</label>
+          <input type="text" id="fp_other_certs" name="other_certs" value="{{candidate.other_certs}}" placeholder="e.g. NISM" class="fp-input">
+        </div>
+        <div class="fp-field fp-field-checkbox">
+          <label class="fp-checkbox-label">
+            <input type="checkbox" name="fm_cert" value="1" {{#candidate.fm_cert}}checked{{/candidate.fm_cert}}>
+            FinTree FM Certification Completed
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION: Documents ===== -->
+    <div class="fp-form-section">
+      <h3 class="fp-section-title">Documents</h3>
+      <div class="fp-form-grid">
+        <div class="fp-field fp-field-wide">
+          <label for="fp_resume_url">Resume URL (Google Drive Link) <span class="fp-required">*</span></label>
+          <input type="url" id="fp_resume_url" name="resume_url" value="{{candidate.resume_url}}" placeholder="https://drive.google.com/..." class="fp-input">
+          <small class="fp-hint">Ensure a matching resume specific to this role is uploaded to Google Drive with "Anyone with link can view".</small>
+        </div>
+        <div class="fp-field fp-field-wide">
+          <label for="fp_photo_url">Passport Photo URL (Optional)</label>
+          <input type="url" id="fp_photo_url" name="photo_url" value="{{candidate.photo_url}}" placeholder="Optional" class="fp-input">
+        </div>
+      </div>
+    </div>
+
+    <div class="fp-form-actions" style="margin-top: 40px; text-align: right; border-top: 1px solid var(--fp-border); padding-top: 24px;">
+      <button type="submit" class="fp-btn fp-btn-primary" style="padding: 18px 48px; font-size: 1.15rem; font-weight: 800; border-radius: 6px;">
+        Confirm Profile & Apply Now →
+      </button>
+    </div>
+
+  </form>
+</div><!-- /fp-profile-page -->

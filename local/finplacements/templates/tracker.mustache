@@ -1,0 +1,65 @@
+<div class="fp_tracker-page">
+  <div class="fp-page-header">
+    <h2>{{#str}} tracker_heading, local_finplacements {{/str}}</h2>
+    <a href="{{browse_url}}" class="fp-btn fp-btn-primary fp-btn-sm">Browse Jobs →</a>
+  </div>
+
+  {{^has_applications}}
+  <div class="fp-empty-state">
+    <div class="fp-empty-icon">📄</div>
+    <h3>No applications yet.</h3>
+    <p>
+      You haven't applied to any openings yet.
+      <a href="{{browse_url}}">Browse the job board</a> to find opportunities.
+    </p>
+  </div>
+  {{/has_applications}}
+
+  {{#has_applications}}
+  
+  <!-- Status Filter Tabs -->
+  <div class="fp-status-tabs">
+    {{#status_tabs}}
+    <a href="#" 
+       class="fp-status-tab {{#selected}}active{{/selected}}" 
+       data-status="{{key}}">
+      {{label}}
+      {{#count}}<span class="fp-tab-count">{{count}}</span>{{/count}}
+    </a>
+    {{/status_tabs}}
+  </div>
+
+  <!-- Search and Sort Bar -->
+  <form method="get" action="" class="fp-tracker-controls" id="fp-tracker-filter-form">
+    <div class="fp-tracker-search">
+      <input type="text" 
+             name="search" 
+             id="fp_tracker_search" 
+             value="{{current_search}}" 
+             placeholder="Search by company or job title…"
+             autocomplete="off">
+      <span class="fp-search-icon">🔍</span>
+    </div>
+    
+    <div class="fp-tracker-sort">
+      <label for="fp_tracker_sort">Sort by:</label>
+      <select name="sort" id="fp_tracker_sort">
+        {{#sort_options}}
+        <option value="{{key}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+        {{/sort_options}}
+      </select>
+    </div>
+  </form>
+
+  <!-- Applications Count -->
+  <div class="fp-tracker-count-bar">
+    <span id="fp-app-count">{{app_count}} application(s)</span>
+  </div>
+
+  <!-- Applications Table (AJAX target) -->
+  <div id="fp-tracker-container">
+    {{> local_finplacements/tracker_table }}
+  </div>
+
+  {{/has_applications}}
+</div>

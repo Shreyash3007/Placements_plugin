@@ -1,0 +1,117 @@
+<div class="fp-jobboard-page">
+  <div class="fp-admin-header">
+    <h2>{{#str}} jobboard_heading, local_finplacements {{/str}}</h2>
+  </div>
+
+  {{#profile_incomplete}}
+  <div class="fp-profile-banner">
+    ⚠️ &nbsp;
+    <span>Complete your profile to apply — <strong>{{profile_score}}% done</strong>.
+      <a href="{{profile_url}}">Complete your profile →</a>
+    </span>
+  </div>
+  {{/profile_incomplete}}
+
+  <!-- Filter and Sort Bar -->
+  <form method="get" action="" class="fp-filters" id="fp-filter-form">
+    <div class="fp-filter-group">
+      <label for="fp_filter_keyword">Search</label>
+      <input type="text" name="keyword" id="fp_filter_keyword" value="{{filter_keyword}}" placeholder="Title, company, or skills…">
+    </div>
+    
+    <div class="fp-filter-group">
+      <label for="fp_filter_location">Location</label>
+      <input type="text" name="location" id="fp_filter_location" value="{{filter_location}}" placeholder="City…">
+    </div>
+    
+    <div class="fp-filter-group">
+      <label for="fp_filter_type">Type</label>
+      <select name="employment_type" id="fp_filter_type">
+        <option value="">All Types</option>
+        <option value="fulltime" {{#is_fulltime}}selected{{/is_fulltime}}>Full-time</option>
+        <option value="internship" {{#is_internship}}selected{{/is_internship}}>Internship</option>
+      </select>
+    </div>
+    
+    <div class="fp-filter-group">
+      <label for="fp_filter_exp">Experience</label>
+      <select name="exp_band" id="fp_filter_exp">
+        <option value="">Any Experience</option>
+        {{#exp_band_options}}
+        <option value="{{val}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+        {{/exp_band_options}}
+      </select>
+    </div>
+    
+    <div class="fp-filter-group fp-checkbox-group">
+      <label style="display:flex;align-items:center;gap:6px;">
+        <input type="checkbox" name="cfa_only" value="1" {{#filter_cfa_only}}checked{{/filter_cfa_only}}>
+        <span>CFA Required</span>
+      </label>
+    </div>
+    
+    <div class="fp-filter-group fp-checkbox-group">
+      <label style="display:flex;align-items:center;gap:6px;">
+        <input type="checkbox" name="frm_only" value="1" {{#filter_frm_only}}checked{{/filter_frm_only}}>
+        <span>FRM Required</span>
+      </label>
+    </div>
+    
+    <div class="fp-filter-group">
+      <label for="fp-sort-select">Sort</label>
+      <select name="sort" id="fp-sort-select">
+        {{#sort_options}}
+        <option value="{{key}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+        {{/sort_options}}
+      </select>
+    </div>
+    
+    <div class="fp-filter-actions">
+      <button type="submit" class="fp-btn fp-btn-primary fp-btn-sm">Filter</button>
+      <a href="{{clear_url}}" class="fp-btn fp-btn-secondary fp-btn-sm">Clear</a>
+    </div>
+  </form>
+  
+  <!-- Job Count Display -->
+  <div class="fp-job-count-bar">
+    <span id="fp-job-count">{{total}} job(s) found</span>
+  </div>
+
+  <!-- Jobs Container (AJAX target) -->
+  <div id="fp-jobs-container">
+    {{#has_openings}}
+    <div class="fp-jobs-grid">
+      {{#openings}}
+          {{> local_finplacements/job_card }}
+      {{/openings}}
+    </div>
+    {{/has_openings}}
+
+    {{^has_openings}}
+    <div class="fp-empty-state">
+      <div class="fp-empty-icon">📋</div>
+      <h3>No openings available right now.</h3>
+      <p>Check back soon — new opportunities are posted regularly.</p>
+    </div>
+    {{/has_openings}}
+  </div>
+
+  <!-- Pagination -->
+  {{#has_openings}}
+  <div id="fp-pagination-container">
+    {{#has_next}}
+    <div class="fp-pagination">
+      {{#has_prev}}
+      <a href="{{prev_url}}" class="fp-btn fp-btn-secondary fp-pagination-btn" data-page="{{prev_page}}">← Previous</a>
+      {{/has_prev}}
+      
+      <span class="fp-page-info">Page {{current_page}} of {{total_pages}}</span>
+      
+      {{#has_next}}
+      <a href="{{next_url}}" class="fp-btn fp-btn-secondary fp-pagination-btn" data-page="{{next_page}}">Next →</a>
+      {{/has_next}}
+    </div>
+    {{/has_next}}
+  </div>
+  {{/has_openings}}
+</div>
